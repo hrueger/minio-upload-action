@@ -22,13 +22,23 @@ import fs from "fs";
             accessKey: access_key,
             secretKey: secret_key
         });
-        // find files with glob
-        const files = source.includes("*") ? glob.sync(source) : (fs.existsSync(source) ? fs.statSync(source).isFile() ? [source] : fs.readdirSync(source).map(f => source + "/" + f) : []);
+        let files: [string, string][] = [];
+        if (source.includes("*")) {
+            files = glob.sync(source).map(file => [file, file]);
+        } else {
+            if (fs.existsSync(source)) {
+                if (fs.statSync(source).isFile()) {
+                    files = [[source, source]];
+                } else {
+                    files = fs.readdirSync(source).map(f => [source + "/" + f, f]);
+                }
+            }
+        }
         console.log(`Found ${files.length} files:\n    ${files.join("\n    ")}`);
         // upload files
         for (const file of files) {
             console.log(`Uploading ${file} to ${destination}`);
-            await minioClient.fPutObject(bucket, (destination.endsWith("/") ? destination : `${destination}/`) + file, file).catch((e) => {
+            await minioClient.fPutObject(bucket, (destination.endsWith("/") ? destination : `${destination}/`) + file[1], file[0]).catch((e) => {
                 core.setFailed(e.message);
                 process.exit(1);
             });
