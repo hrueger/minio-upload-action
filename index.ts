@@ -1,6 +1,7 @@
-import core from '@actions/core';
-import minio from "minio";
+import * as core from '@actions/core';
+import * as minio from "minio";
 import glob from "glob";
+import fs from "fs";
 
 (async () => {
 
@@ -22,7 +23,7 @@ import glob from "glob";
             secretKey: secret_key
         });
         // find files with glob
-        const files = glob.sync(source);
+        const files = source.includes("*") ? glob.sync(source) : (fs.existsSync(source) ? fs.statSync(source).isFile() ? [source] : fs.readdirSync(source).map(f => source + "/" + f) : []);
         console.log(`Found ${files.length} files:\n    ${files.join("\n    ")}`);
         // upload files
         for (const file of files) {
