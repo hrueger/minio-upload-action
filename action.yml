@@ -1,0 +1,32 @@
+name: 'MinIO Upload'
+description: 'Uploads a file or folder to MinIO'
+inputs:
+  access_key:
+    description: 'MinIO Access Key'
+    required: true
+  secret_key:
+    description: 'MinIO Secret Key'
+    required: true
+  endpoint:
+    description: 'MinIO Endpoint'
+    required: true
+  port:
+    description: 'MinIO Port'
+    required: false
+    default: 443
+  useSSL:
+    description: 'MinIO useSSL'
+    required: false
+    default: true
+  bucket:
+    description: 'MinIO Bucket'
+    required: true
+  source:
+    description: 'Source file or folder'
+    required: true
+  destination:
+    description: 'Destination'
+    required: true
+runs:
+  using: 'node16'
+  main: 'dist/index.js'

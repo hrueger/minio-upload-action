@@ -1,0 +1,22 @@
+{
+  "name": "minio-upload-action",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "esbuild --bundle --platform=node --minify index.ts --outfile=dist/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@actions/core": "^1.9.1",
+    "glob": "^8.0.3",
+    "minio": "^7.0.32"
+  },
+  "devDependencies": {
+    "@types/glob": "^8.0.0",
+    "@types/minio": "^7.0.13",
+    "esbuild": "^0.15.9"
+  }
+}
